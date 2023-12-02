@@ -58,9 +58,7 @@ const GenerateSoalView = ({ session }: Props) => {
             toast("Pilih mata pelajaran terlebih dahulu", { position: 'bottom-center' })
             return;
         }
-
         setIsInitial(false)
-
         await generate();
     }
 
@@ -86,9 +84,6 @@ const GenerateSoalView = ({ session }: Props) => {
             }),
         });
 
-        console.log('response', response);
-        
-
         if (!response.ok) {
             console.log(response)
 
@@ -103,8 +98,6 @@ const GenerateSoalView = ({ session }: Props) => {
         if (!data) {
             return;
         }
-        console.log('data', data);
-        
 
         const decoder = new TextDecoder();
         const reader = data.getReader();
@@ -121,9 +114,6 @@ const GenerateSoalView = ({ session }: Props) => {
             buffer += chunkValue;
         }
 
-        console.log('buffer', buffer);
-        
-
         try {
             const aiQuestions = JSON.parse(buffer)
             setQuestions(aiQuestions);
@@ -131,7 +121,6 @@ const GenerateSoalView = ({ session }: Props) => {
             toast("Response sedang melambat, silahkan lakukan generate ulang")
             console.log(error);
         }
-
         setIsLoading(false)
         scrollToBios();
     };
