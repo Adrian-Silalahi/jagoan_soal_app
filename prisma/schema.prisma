@@ -1,0 +1,144 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  name              String?
+  email             String?             @unique
+  emailVerified     DateTime?
+  image             String?
+  accounts          Account[]
+  sessions          Session[]
+  QuestionGenerated QuestionGenerated[]
+  QuestionBank      QuestionBank[]
+  QuestionGroup     QuestionGroup[]
+  Transaction       Transaction[]
+}
+
+model VerificationToken {
+  identifier String   @id @map("_id")
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model QuestionGenerated {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  total     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  user_id   String   @db.ObjectId
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model QuestionBank {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  question  String   
+  a         String?  
+  b         String?  
+  c         String?  
+  d         String?  
+  e         String?  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  user_id   String   @db.ObjectId
+  answer    String?  
+  subject   String?  
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model QuestionGroup {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   
+  questions Json     @default("[]") @db.Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  user_id   String   @db.ObjectId
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model Package {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String        
+  code        String        
+  price       Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+  Transaction Transaction[]
+}
+
+model Transaction {
+  id           String            @id  @map("_id")
+  amount       Int
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @default(now()) @updatedAt
+  user_id      String            @db.ObjectId
+  status       TransactionStatus @default(pending)
+  gross_amount Int               @db.Int
+  payment_type String            
+  is_active    Boolean           @default(false)
+  expired_at   DateTime?         
+  package_id   String            @db.ObjectId
+  user         User              @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  package      Package           @relation(fields: [package_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([package_id])
+}
+
+enum TransactionStatus {
+  authorize
+  capture
+  settlement
+  deny
+  pending
+  cancel
+  refund
+  partial_refund
+  chargeback
+  partial_chargeback
+  expire
+  failure
+}
