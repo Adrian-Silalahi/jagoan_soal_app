@@ -1,4 +1,4 @@
-import {utils, writeFile } from 'xlsx';
+import { utils, writeFile } from 'xlsx';
 
 export const exportToXLSX = (data, fileName) => {
     const worksheet = utils.json_to_sheet(data);

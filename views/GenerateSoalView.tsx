@@ -49,15 +49,19 @@ const GenerateSoalView = ({ session }: Props) => {
             router.push("/api/auth/signin")
             return;
         }
-
-        if (total === 0) {
-            return;
-        }
-
         if (subject === "") {
-            toast("Pilih mata pelajaran terlebih dahulu", { position: 'bottom-center' })
+            toast.error("Pilih mata pelajaran terlebih dahulu")
             return;
         }
+        if (topic === "") {
+            toast.error("Masukkan topik soal")
+            return;
+        }
+        if (total === 0) {
+            toast.error("Silahkan tentukan jumlah soal")
+            return;
+        }
+
         setIsInitial(false)
         await generate();
     }
@@ -70,7 +74,7 @@ const GenerateSoalView = ({ session }: Props) => {
         setIsLoading(true)
         reset()
 
-        const response = await fetch("/api/request-question-trial", {
+        const data = await fetch("/api/generate-question", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -83,8 +87,10 @@ const GenerateSoalView = ({ session }: Props) => {
                 promptTotal: total,
             }),
         });
+        const response = await data.json()
+        const questionFromAi = response.data.questions
 
-        if (!response.ok) {
+        if (response === null || response === undefined) {
             console.log(response)
 
             setIsLoading(false)
@@ -92,30 +98,9 @@ const GenerateSoalView = ({ session }: Props) => {
             return;
         }
 
-        // This data is a ReadableStream
-        const data = response.body;
-
-        if (!data) {
-            return;
-        }
-
-        const decoder = new TextDecoder();
-        const reader = data.getReader();
-        console.log('reader', reader);
-        
-        let buffer = ""
-        let done = false;
-
-        while (!done) {
-            const { value, done: doneReading } = await reader.read();
-            done = doneReading;
-            const chunkValue = decoder.decode(value);
-
-            buffer += chunkValue;
-        }
-
         try {
-            const aiQuestions = JSON.parse(buffer)
+            const aiQuestions = questionFromAi
+            console.log('aiQuestions', aiQuestions);
             setQuestions(aiQuestions);
         } catch (error) {
             toast("Response sedang melambat, silahkan lakukan generate ulang")
@@ -159,7 +144,7 @@ const GenerateSoalView = ({ session }: Props) => {
 
                         <div className='mt-4 flex w-full flex-col gap-2'>
                             <Label>Jumlah Soal <span className='text-lg font-bold'>--{total}--</span></Label>
-                            <Slider disabled={isLoading} defaultValue={[0]} max={10} step={2} onValueChange={(e) => setTotal(e[0])} value={[total]} />
+                            <Slider disabled={isLoading} defaultValue={[0]} max={10} step={1} onValueChange={(e) => setTotal(e[0])} value={[total]} />
                         </div>
                     </motion.div>
                     <Button
@@ -176,9 +161,9 @@ const GenerateSoalView = ({ session }: Props) => {
                 {isInitial && <div> Generate soal apapun seperti : </div>}
                 {isInitial &&
                     <div className='flex flex-col gap-4'>
-                        <span className='cursor-pointer rounded-md border p-4 text-sm hover:bg-zinc-50' onClick={() => { setSubject('Bahasa Inggris'); setTopic('Expression'); setGrade('3 SMP'); setTotal(1) }}><span className='font-bold'>Bahasa Inggris</span>: Expression untuk kelas 3 SMP</span>
-                        <span className='cursor-pointer rounded-md border p-4 text-sm hover:bg-zinc-50' onClick={() => { setSubject('IPA'); setTopic('Sistem Pencernaan'); setGrade('3 SMA'); setTotal(1) }}><span className='font-bold'>IPA</span>: Sistem Pencernaan untuk kelas 1 SMA</span>
-                        <span className='cursor-pointer rounded-md border p-4 text-sm hover:bg-zinc-50' onClick={() => { setSubject('Matematika'); setTopic('Pecahan'); setGrade('5 SD'); setTotal(1) }}><span className='font-bold'>Matematika</span>: Pecahan untuk kelas 5 SD</span>
+                        <span className='cursor-pointer rounded-md border p-4 text-sm hover:bg-zinc-50' onClick={() => { setSubject('Bahasa Inggris'); setTopic('Expression'); setGrade('3 SMP'); setTotal(0) }}><span className='font-bold'>Bahasa Inggris</span>: Expression untuk kelas 3 SMP</span>
+                        <span className='cursor-pointer rounded-md border p-4 text-sm hover:bg-zinc-50' onClick={() => { setSubject('IPA'); setTopic('Sistem Pencernaan'); setGrade('3 SMA'); setTotal(0) }}><span className='font-bold'>IPA</span>: Sistem Pencernaan untuk kelas 1 SMA</span>
+                        <span className='cursor-pointer rounded-md border p-4 text-sm hover:bg-zinc-50' onClick={() => { setSubject('Matematika'); setTopic('Pecahan'); setGrade('5 SD'); setTotal(0) }}><span className='font-bold'>Matematika</span>: Pecahan untuk kelas 5 SD</span>
                     </div>
                 }
                 {isLoading && [0, 1, 2, 3, 4].map((item) => (

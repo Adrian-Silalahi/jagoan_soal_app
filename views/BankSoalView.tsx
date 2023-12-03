@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import useDebounceValue from '@/hooks/use-debounce'
 import { fetcher } from '@/lib/fetcher'
-import { exportToXLSX } from '@/utils/exportexcel'
+import { exportToXLSX } from '@/utils/export-to-excel'
 import { QuestionBank } from '@prisma/client'
 import { Download, Pointer, Trash, X } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -41,7 +41,7 @@ const BankSoalView = () => {
 
   const onExportClick = () => {
     if (select.length === 0) return
-    const se = data?.questions.filter(q => select.includes(q.id)).map(q => {
+    const selecQuestion = data?.questions.filter(q => select.includes(q.id)).map(q => {
       return {
         'Mata Pelajaran': q.subject,
         // 'Kelas': q.grade,
@@ -54,7 +54,7 @@ const BankSoalView = () => {
         'Pilihan E': q.e,
       }
     })
-    exportToXLSX(se || [], `bikinsoal-${new Date().toISOString()}`)
+    exportToXLSX(selecQuestion || [], `jagoansoal-${new Date().toISOString()}`)
     setDialogOpen('')
     setSelect([])
     setState('idle')

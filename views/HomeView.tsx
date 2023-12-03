@@ -14,7 +14,6 @@ const HomeView = () => {
         <SectionHeader />
         <SectionVideo />
         <SectionFeature />
-        {/* <SectionPricing /> */}
         <SectionContact />
       </div>
     </SessionProvider>
