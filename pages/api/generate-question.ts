@@ -78,41 +78,6 @@ export default async function POST(req: Request) {
   }
 
   const askOpenAi = async (content) => {
-    const payload = {
-      model: "gpt-3.5-turbo-0613",
-      messages: [
-        {
-          role: "user",
-          content: content
-        },
-      ],
-      functions: [
-        {
-          name: "generate_soal_ujian",
-          description:
-            "Berikanlah soal ujian sesuai dengan content yang diberikan. Gunakan format JSON",
-          parameters: {
-            type: "object",
-            properties: {
-              question: {
-                type: "string",
-              },
-              options: {
-                type: "array",
-                items : {
-                  type: "string"
-                }
-              },
-              answer: {
-                type: "string",
-              }
-            },
-            required: ["question", "answer"],
-          },
-        },
-      ],
-    };
-
     const completion = await openai.chat.completions.create({
       messages: [
         {
@@ -125,13 +90,12 @@ export default async function POST(req: Request) {
       response_format: { type: "json_object" },
     });
     const data = completion.choices[0].message.content
-    console.log('data>>>>>>>>>>>>>>>>>>>>>>', data);
     return data
   };
+  
   const questions: string | null = await askOpenAi(generateQuizPrompt)
   if (questions !== null) {
     const endQuestions = JSON.parse(questions)
-    console.log('endQuestions', endQuestions);
     return NextResponse.json({data : endQuestions})
   }
   
