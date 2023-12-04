@@ -103,7 +103,11 @@ const BankSoalView = () => {
             <>
               <Button onClick={onCancelSelect}><X className="h-4 w-4"/></Button>
               <Button variant="destructive" onClick={onRemoveClick}><Trash className="h-4 w-4" /></Button>
-              <Button variant="outline" onClick={onExportClick}><Download className="h-4 w-4" /></Button>
+              <Button variant="outline" onClick={onExportClick}><Download className="h-4 w-4" />
+                <span className='ml-2'>
+                  Excel
+                </span>
+              </Button>
             </>}
 
         </div>
