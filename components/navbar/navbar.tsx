@@ -36,7 +36,8 @@ const Navbar = () => {
     <SessionProvider >
       <div className={cn("fixed inset-x-0 top-0 z-10 flex justify-between bg-white p-4 transition lg:px-12", isScrolled ? 'shadow-sm' : '')}>
         <Link href="/" className='inline-flex'>
-          <Image alt='logo' src={"/logo.png"} width={100} height={100} className="w-24 object-contain lg:w-32 xl:w-48" />
+          <Image src="/logo.png" alt="logo" width={38} height={17} />
+          <p className='text-3xl font-semibold'>Jagoan Soal</p>
         </Link>
 
         <div className='hidden items-center gap-4 md:inline-flex'>
