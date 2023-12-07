@@ -34,7 +34,7 @@ const SectionFeature = () => {
         <FeatureItem title={"Kesulitan yang Fleksibel"} description={"Kesulitan yang Fleksibel Sesuaikan tingkat kesulitan sesuai kebutuhan, cocok untuk berbagai jenis ujian."} icon={<ChevronUp className="text-2xl " />} />
         <FeatureItem title={"Materi Lintas Bidang"} description={"Cocok untuk beragam mata pelajaran, mulai dari matematika hingga ilmu sosial."} icon={<ClipboardList className="text-2xl " />} />
         <FeatureItem title={"Integrasi Bank Soal"} description={"Impor dan kelola bank soal lama, memudahkan transisi ke sistem baru."} icon={<Activity className="text-2xl " />} />
-        <FeatureItem title={"AI yang Berkembang"} description={"Kami menggunakan GPT-3.5 Turbo yang dari OpenAI, Sehingga soal yang diberikan lebih akurat."} icon={<Cpu className="text-2xl " />} />
+        <FeatureItem title={"AI yang Berkembang"} description={"Kami menggunakan GPT-3.5 Turbo dari OpenAI, Sehingga soal yang diberikan lebih akurat."} icon={<Cpu className="text-2xl " />} />
       </div>
     </motion.div>
   )
