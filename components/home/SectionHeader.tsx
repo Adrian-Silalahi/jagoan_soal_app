@@ -42,7 +42,6 @@ const SectionHeader = () => {
           <div className='mt-9 flex w-5/6 flex-row items-center justify-center gap-10 sm:w-2/6'>
             <Image src="/openai.png" alt="logo-1" width={100} height={100} quality={100} className="w-1/3 object-contain" />
             <Image src="/vercel.png" alt="logo-1" width={100} height={100} quality={100} className="w-1/3 object-contain" />
-            <Image src="/aws.png" alt="logo-1" width={100} height={100} quality={100} className="w-1/3 object-contain" />
           </div>
         </motion.div>
       </div>
