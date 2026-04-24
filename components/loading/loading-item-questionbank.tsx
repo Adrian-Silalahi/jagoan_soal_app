@@ -1,34 +1,41 @@
-import { motion } from 'framer-motion'
-import React from 'react'
-
 const LoadingItemQuestionBank = () => {
-    const itemVariants = {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 },
-    }
+  return (
+    <tr className="border-b border-white/5">
+      {/* Checkbox skeleton */}
+      <td className="py-5 px-6">
+        <div className="w-5 h-5 rounded bg-surface-container animate-pulse" />
+      </td>
 
-    return (
-        <motion.div
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ duration: 0.3, type: 'spring' }}
-            className="flex w-full flex-col border-x border-b p-3"
-        >
-            <div className="flex animate-pulse space-x-4">
-                <div className="flex-1 space-y-6 py-1">
-                    <div className="space-y-3">
-                        <motion.div variants={itemVariants}>
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="col-span-2 h-2 rounded bg-zinc-300"></div>
-                                <div className="col-span-1 h-2 rounded bg-zinc-300"></div>
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            </div>
-        </motion.div>
-    )
+      {/* Number skeleton */}
+      <td className="py-5 px-4">
+        <div className="w-6 h-4 rounded bg-surface-container animate-pulse" />
+      </td>
+
+      {/* Question skeleton */}
+      <td className="py-5 px-6">
+        <div className="relative overflow-hidden">
+          <div className="h-4 bg-surface-container rounded w-3/4 animate-pulse" />
+          {/* Shimmer */}
+          <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
+        </div>
+      </td>
+
+      {/* Badge skeleton */}
+      <td className="py-5 px-6">
+        <div className="w-28 h-6 rounded-full bg-surface-container animate-pulse" />
+      </td>
+
+      {/* Mapel skeleton */}
+      <td className="py-5 px-6">
+        <div className="w-20 h-4 rounded bg-surface-container animate-pulse" />
+      </td>
+
+      {/* Date skeleton */}
+      <td className="py-5 px-6 text-right">
+        <div className="w-16 h-4 rounded bg-surface-container animate-pulse ml-auto" />
+      </td>
+    </tr>
+  )
 }
 
 export default LoadingItemQuestionBank

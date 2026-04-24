@@ -1,12 +1,11 @@
 "use client"
-import React from 'react'
-import BankSoalView from '../../views/BankSoalView'
+
+import React from "react"
+
+import BankSoalView from "../../views/BankSoalView"
 
 const Page = () => {
-
-  return (
-    <BankSoalView />
-  )
+  return <BankSoalView />
 }
 
 export default Page

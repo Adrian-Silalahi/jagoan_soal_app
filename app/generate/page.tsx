@@ -1,14 +1,12 @@
-import React from 'react'
-import { authOptions } from '@/pages/api/auth/[...nextauth]'
-import { getServerSession } from 'next-auth'
-import GenerateSoalView from '@/views/GenerateSoalView'
+import React from "react"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
+import GenerateSoalView from "@/views/GenerateSoalView"
+import { getServerSession } from "next-auth"
 
 const page = async () => {
   const session = await getServerSession(authOptions)
 
-  return (
-    <GenerateSoalView session={session} />
-  )
+  return <GenerateSoalView session={session} />
 }
 
 export default page

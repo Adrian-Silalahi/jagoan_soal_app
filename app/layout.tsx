@@ -1,14 +1,16 @@
-import Navbar from "@/components/navbar/navbar"
 import { cn } from "@/lib/utils"
+import Navbar from "@/components/navbar/navbar"
 import "@/styles/globals.css"
-import { Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/react';
-import Toaster from "@/components/toaster";
-import Footer from "@/components/footer/footer";
+import { Inter, Outfit } from "next/font/google"
+import { Analytics } from "@vercel/analytics/react"
+
+import Footer from "@/components/footer/footer"
+import Toaster from "@/components/toaster"
 
 export const metadata = {
-  title: 'JagoanSoal - Generate Soal Online',
-  description: 'JagoanSoal adalah platform untuk membuat soal secara online. Dengan fitur yang lengkap, membuat soal menjadi lebih mudah dan menyenangkan.',
+  title: "JagoanSoal - AI Question Generator",
+  description:
+    "JagoanSoal adalah platform AI untuk membuat soal secara online. Generate soal berkualitas tinggi dalam hitungan detik dari berbagai mata pelajaran.",
   keywords: [
     "AI",
     "ChatGPT",
@@ -20,23 +22,13 @@ export const metadata = {
     "Soal Ujian Nasional",
     "Soal UN",
     "Soal Ujian Sekolah",
-    "Soal Ujian Sekolah Dasar",
-    "Soal Ujian Sekolah Menengah Pertama",
-    "Soal Ujian Sekolah Menengah Atas",
-    "Soal Ujian Sekolah Menengah Kejuruan",
-    "Soal Ujian Sekolah Menengah Kejuruan",
-    "Soal Ujian Sekolah Menengah Kejuruan",
-    "Soal Ujian Sekolah Menengah Kejuruan",
   ],
-  authors: [
-    {
-      name: "adrianus silalahi",
-    }
-  ],
+  authors: [{ name: "adrianus silalahi" }],
   creator: "adrianus silalahi",
 }
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" })
 
 export default async function RootLayout({
   children,
@@ -44,10 +36,25 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="light">
-      <body className={cn('dark:bg-[#0c0c0c] dark:text-white', inter.className)}>
+    // ✅ Ubah "light" → "dark" agar Electric Midnight theme aktif
+    <html lang="en" className="dark">
+      <head>
+        {/* ✅ Material Symbols — dibutuhkan untuk ikon di design baru */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body
+        className={cn(
+          "bg-background text-on-surface min-h-screen flex flex-col",
+          inter.variable,
+          outfit.variable,
+          inter.className
+        )}
+      >
         <Navbar />
-        <main className="mt-24">
+        <main className="mt-24 flex-1">
           {children}
           <Analytics />
           <Toaster />

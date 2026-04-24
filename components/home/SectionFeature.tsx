@@ -1,42 +1,123 @@
 "use client"
-import { motion } from 'framer-motion'
-import { Activity, Boxes, ChevronUp, ClipboardList, Cpu, Timer } from 'lucide-react'
-import React from 'react'
+
+import React from "react"
+import { motion } from "framer-motion"
+import { Bot, Boxes, Database, Monitor, Shuffle, Timer } from "lucide-react"
 
 interface FeatureItemProps {
   icon: React.ReactNode
-  title?: string
-  description?: string
+  iconBgClass: string
+  iconTextClass: string
+  title: string
+  description: string
 }
 
-const FeatureItem = ({ icon, title, description }: FeatureItemProps) => {
+const FeatureItem = ({
+  icon,
+  iconBgClass,
+  iconTextClass,
+  title,
+  description,
+}: FeatureItemProps) => {
   return (
-    <div className='flex flex-col'>
-      <div className='inline-flex items-center'>
-        <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-200 text-emerald-500'>{icon}</div>
-        <span className='ml-6 text-lg font-bold'>{title}</span>
+    <div className="glass-card p-8 rounded-xl glass-hover transition-all duration-300 min-h-[270px]">
+      <div
+        className={`w-12 h-12 rounded-lg ${iconBgClass} flex items-center justify-center mb-6 ${iconTextClass}`}
+      >
+        {icon}
       </div>
-      <p className='mt-7'>
-        {description}
-      </p>
+      <h3 className="font-outfit text-xl font-semibold mb-3 text-white">
+        {title}
+      </h3>
+      <p className="text-body-md text-on-surface-variant">{description}</p>
     </div>
   )
 }
 
+const features = [
+  {
+    icon: <Timer className="w-6 h-6" />,
+    iconBgClass: "bg-primary-container/20",
+    iconTextClass: "text-primary",
+    title: "Hemat Waktu",
+    description:
+      "Kurangi waktu penyusunan soal dari berjam-jam menjadi hanya beberapa detik saja.",
+  },
+  {
+    icon: <Boxes className="w-6 h-6" />,
+    iconBgClass: "bg-secondary-container/20",
+    iconTextClass: "text-secondary-container",
+    title: "Multi Topik",
+    description:
+      "Dukung berbagai mata pelajaran mulai dari eksakta hingga humaniora secara akurat.",
+  },
+  {
+    icon: <Database className="w-6 h-6" />,
+    iconBgClass: "bg-tertiary-container/20",
+    iconTextClass: "text-tertiary",
+    title: "Bank Soal",
+    description:
+      "Simpan dan organisir ribuan soal yang telah digenerate dalam satu tempat aman.",
+  },
+  {
+    icon: <Shuffle className="w-6 h-6" />,
+    iconBgClass: "bg-error-container/20",
+    iconTextClass: "text-error",
+    title: "Variasi Soal",
+    description: "Hasilkan soal Pilihan Ganda dan Essay dengan mudah.",
+  },
+  {
+    icon: <Monitor className="w-6 h-6" />,
+    iconBgClass: "bg-primary-container/20",
+    iconTextClass: "text-primary-container",
+    title: "Responsive",
+    description:
+      "Akses platform dari perangkat apa saja, PC, tablet, maupun smartphone tanpa kendala.",
+  },
+  {
+    icon: <Bot className="w-6 h-6" />,
+    iconBgClass: "bg-secondary-container/20",
+    iconTextClass: "text-secondary",
+    title: "AI Powered",
+    description:
+      "Memanfaatkan teknologi LLM terbaru untuk memastikan kualitas dan relevansi soal tingkat tinggi.",
+  },
+]
+
 const SectionFeature = () => {
   return (
-    <motion.div className='mt-20 flex w-full flex-col'>
-      <h1 className='text-2xl font-bold text-emerald-500'>Fitur</h1>
-      <h2 className='mt-3 text-xl font-bold leading-snug md:text-2xl lg:text-4xl xl:text-5xl'>Keunggulan Jagoansoal.com<br />Antara Lain:</h2>
-      <div className='mt-20 grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3'>
-        <FeatureItem title={"Hemat Waktu"} description={"AI otomatis menghasilkan soal, membebaskan pengajar untuk fokus pada aspek pendidikan lainnya."} icon={<Timer className="text-2xl " />} />
-        <FeatureItem title={"Variasi Soal Luas"} description={"Soal menantang dan unik mengurangi risiko kebocoran dan meningkatkan kualitas ujian."} icon={<Boxes className="text-2xl " />} />
-        <FeatureItem title={"Kesulitan yang Fleksibel"} description={"Kesulitan yang Fleksibel Sesuaikan tingkat kesulitan sesuai kebutuhan, cocok untuk berbagai jenis ujian."} icon={<ChevronUp className="text-2xl " />} />
-        <FeatureItem title={"Materi Lintas Bidang"} description={"Cocok untuk beragam mata pelajaran, mulai dari matematika hingga ilmu sosial."} icon={<ClipboardList className="text-2xl " />} />
-        <FeatureItem title={"Integrasi Bank Soal"} description={"Impor dan kelola bank soal lama, memudahkan transisi ke sistem baru."} icon={<Activity className="text-2xl " />} />
-        <FeatureItem title={"AI yang Berkembang"} description={"Kami menggunakan GPT-3.5 Turbo dari OpenAI, Sehingga soal yang diberikan lebih akurat."} icon={<Cpu className="text-2xl " />} />
+    <section
+      className="py-[120px] bg-surface/50 border-t border-white/5 relative"
+      id="fitur"
+    >
+      {/* Subtle ambient glow */}
+      <div className="absolute right-0 top-0 w-1/3 h-full bg-primary-container/5 rounded-l-full blur-[150px] -z-10" />
+
+      <div className="max-w-[1280px] mx-auto px-6 relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="font-outfit text-3xl sm:text-4xl md:text-headline-xl font-bold mb-4 text-white">
+            Kenapa <span className="text-primary">Jagoan Soal?</span>
+          </h2>
+          <p className="text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+            Platform all-in-one untuk kebutuhan pembuatan soal evaluasi modern.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <FeatureItem {...feature} />
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </motion.div>
+    </section>
   )
 }
 

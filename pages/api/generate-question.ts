@@ -86,16 +86,71 @@ export default async function handler(
     if (error) {
       return res.status(400).json({ error })
     }
-    if (total > 10) {
-      return res.status(400).json({ error: "Jumlah soal maksimal 10" })
+    if (total > 20) {
+      return res.status(400).json({ error: "Jumlah soal maksimal 20" })
     }
 
     let generateQuizPrompt = ""
 
     if (withOption) {
-      generateQuizPrompt = `Berikan soal pilihan ganda. berjumlah ${total} saja, untuk kelas ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: gunakan json 'questions:[{question:"question",options:["A. answer","B. answer","C. answer","D. answer","E. answer"],answer:"answer"}]'. Pastikan anda memberikan options sebanyak 5 alias dari A - E`
+      generateQuizPrompt = `
+Buatkan ${total} soal pilihan ganda untuk mata pelajaran ${subject}, kelas ${grade}, dengan topik: ${topic}.
+
+ATURAN PENTING:
+- Soal harus berupa pertanyaan atau pernyataan yang LANGSUNG bisa dijawab oleh siswa
+- JANGAN menulis soal yang berisi instruksi seperti "jelaskan cara", "berikan contoh", "sebutkan langkah" — itu bukan soal pilihan ganda yang valid
+- Gunakan format: pernyataan situasi / pertanyaan langsung → pilihan jawaban
+- Contoh soal yang BENAR: "Sebuah persegi panjang memiliki panjang 8 cm dan lebar 5 cm. Berapakah luasnya?"
+- Contoh soal yang SALAH: "Jelaskan cara menghitung luas persegi panjang dan berikan contohnya!"
+
+Ketentuan tambahan:
+- Sesuaikan kesulitan dengan tingkat kelas ${grade} (SD: konkret & sederhana; SMP: penalaran; SMA: analitis)
+- Gunakan Bahasa Indonesia yang baku dan tidak ambigu
+- Setiap soal memiliki 5 pilihan jawaban (A sampai E), hanya 1 benar
+- Distraktor (pilihan salah) harus masuk akal dan tidak mudah ditebak
+- Field "answer" berisi teks lengkap jawaban yang benar, sama persis dengan salah satu isi options
+- Field "explanation" berisi 1-2 kalimat mengapa jawaban itu benar
+- Variasikan level kognitif: C1 (hafalan), C2 (pemahaman), C3 (penerapan), C4 (analisis)
+
+Format JSON:
+{
+  "questions": [
+    {
+      "question": "teks soal",
+      "options": ["A. pilihan1", "B. pilihan2", "C. pilihan3", "D. pilihan4", "E. pilihan5"],
+      "answer": "teks jawaban benar (persis sama dengan salah satu options)",
+      "explanation": "penjelasan singkat"
+    }
+  ]
+}
+`
     } else {
-      generateQuizPrompt = `Berikan soal essay berjumlah ${total} saja, untuk kelas ${grade} dengan mata pelajaran ${subject} dan topik ${topic}. pastikan hanya berikan soal dengan format berikut: gunakan json 'questions:[{question:"question",answer:"answer"}]' `
+      generateQuizPrompt = `
+Buatkan ${total} soal essay untuk mata pelajaran ${subject}, kelas ${grade}, dengan topik: ${topic}.
+
+ATURAN PENTING:
+- Soal harus merupakan pertanyaan atau situasi yang LANGSUNG bisa dijawab oleh siswa
+- JANGAN menulis soal yang berbunyikan instruksi kepada AI seperti "berikan contoh soal", "sebutkan macam-macam soal", atau "jelaskan cara membuat soal"
+- Jika topik mengandung kata "soal cerita", artinya buat soal berbentuk narasi/cerita lalu ajukan pertanyaan kepada siswa (bukan minta AI membuat soal cerita)
+- Contoh soal yang BENAR: "Sebuah toko menjual 240 buah apel. Jika 3/4 dari apel tersebut terjual pada hari pertama, berapa sisa apel yang belum terjual?"
+- Contoh soal yang SALAH: "Berikan contoh soal cerita tentang pecahan dan jawabannya!"
+
+Ketentuan tambahan:
+- Sesuaikan kesulitan dan bahasa dengan tingkat kelas ${grade}
+- Gunakan Bahasa Indonesia yang baku dan jelas
+- Soal mendorong siswa berpikir, bukan sekadar menghafal
+- Field "answer" berisi kunci jawaban komprehensif (3-5 kalimat), bukan 1 kata
+
+Format JSON:
+{
+  "questions": [
+    {
+      "question": "teks soal",
+      "answer": "kunci jawaban lengkap"
+    }
+  ]
+}
+`
     }
 
     const askGroq = async (content: string) => {
@@ -103,11 +158,17 @@ export default async function handler(
         messages: [
           {
             role: "system",
-            content: "You are a helpful assistant designed to output JSON.",
+            content: `Kamu adalah seorang guru berpengalaman dan ahli pembuatan soal ujian di Indonesia. 
+Kamu memahami Kurikulum Merdeka, standar kompetensi per jenjang pendidikan (SD, SMP, SMA), 
+dan prinsip pembuatan soal yang baik sesuai kaidah penilaian pendidikan. 
+Kamu selalu menghasilkan soal dalam Bahasa Indonesia yang baku, jelas, tidak ambigu, 
+dan sesuai dengan perkembangan kognitif siswa sesuai kelasnya.
+Kamu HANYA merespons dalam format JSON yang diminta, tanpa teks tambahan apapun.`,
           },
           { role: "user", content: content },
         ],
         model: "llama-3.3-70b-versatile",
+        temperature: 0.7,
         response_format: { type: "json_object" },
       })
       return completion.choices[0].message.content
