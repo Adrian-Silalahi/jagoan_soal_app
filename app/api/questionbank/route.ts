@@ -8,15 +8,12 @@ export const POST = async (req: NextRequest) => {
   const session = await getServerSession(authOptions)
 
   if (!session?.user?.email) {
-    return {
-      status: 401,
-      body: {
-        message: "Unauthorized",
-      },
-    }
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
   }
 
-  const { question, a, b, c, d, e, answer, subject } = await req.json()
+  // Gunakan req.text() + JSON.parse() untuk hindari bug undici di Node 18+ (Vercel)
+  const body = JSON.parse(await req.text())
+  const { question, a, b, c, d, e, answer, subject } = body
 
   const qb = await prisma.questionBank.create({
     data: {
@@ -43,18 +40,12 @@ export const GET = async (req: NextRequest) => {
   const session = await getServerSession(authOptions)
 
   if (!session?.user?.email) {
-    return {
-      status: 401,
-      body: {
-        message: "Unauthorized",
-      },
-    }
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
   }
 
   const url = new URL(req.url)
   const query = url.searchParams.get("query") || ""
   const paramsPage = parseInt(url.searchParams.get("page") || "1")
-  // const paramsLimit = parseInt(url.searchParams.get("limit") || '10')
   const paramsLimit = 10
 
   const qb = await prisma.questionBank.findMany({
@@ -96,15 +87,12 @@ export const DELETE = async (req: NextRequest) => {
   const session = await getServerSession(authOptions)
 
   if (!session?.user?.email) {
-    return {
-      status: 401,
-      body: {
-        message: "Unauthorized",
-      },
-    }
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
   }
 
-  const { ids } = await req.json()
+  // Gunakan req.text() + JSON.parse() untuk hindari bug undici di Node 18+ (Vercel)
+  const body = JSON.parse(await req.text())
+  const { ids } = body
 
   const qb = await prisma.questionBank.deleteMany({
     where: {
@@ -119,3 +107,4 @@ export const DELETE = async (req: NextRequest) => {
 
   return NextResponse.json(qb)
 }
+
