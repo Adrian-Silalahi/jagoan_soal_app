@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import useDebounceValue from "@/hooks/use-debounce"
-import { exportToXLSX } from "@/utils/export-to-excel"
+import { exportToWord } from "@/utils/export-to-word"
 import { QuestionBank } from "@prisma/client"
 import useSWR from "swr"
 
@@ -58,7 +58,7 @@ const BankSoalView = () => {
         "Pilihan D": q.d,
         "Pilihan E": q.e,
       }))
-    exportToXLSX(
+    exportToWord(
       selectedQuestions || [],
       `jagoansoal-${new Date().toISOString()}`
     )
@@ -302,8 +302,8 @@ const BankSoalView = () => {
                        px-4 py-2 rounded-full transition-all active:scale-95 
                        text-sm font-medium border border-white/10"
           >
-            <span className="material-symbols-outlined text-sm">download</span>
-            Export
+            <span className="material-symbols-outlined text-sm">description</span>
+            Export Word
           </button>
           <button
             onClick={onRemoveClick}
