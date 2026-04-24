@@ -302,7 +302,9 @@ const BankSoalView = () => {
                        px-4 py-2 rounded-full transition-all active:scale-95 
                        text-sm font-medium border border-white/10"
           >
-            <span className="material-symbols-outlined text-sm">description</span>
+            <span className="material-symbols-outlined text-sm">
+              description
+            </span>
             Export Word
           </button>
           <button

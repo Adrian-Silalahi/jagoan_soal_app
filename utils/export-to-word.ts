@@ -15,9 +15,9 @@ import {
 import { saveAs } from "file-saver"
 
 interface QuestionData {
-  "Mata Pelajaran"?: string
+  "Mata Pelajaran"?: string | null
   Soal: string
-  Jawaban?: string
+  Jawaban?: string | null
   "Pilihan A"?: string | null
   "Pilihan B"?: string | null
   "Pilihan C"?: string | null
