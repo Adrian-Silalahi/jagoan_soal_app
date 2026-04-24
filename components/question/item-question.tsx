@@ -190,19 +190,23 @@ const ItemQuestion = ({ question, index, subject = "" }: Props) => {
                 // Extract letter key dari answer jika format "C. 150 cm³"
                 const answerUpper = correctAnswer.toUpperCase().trim()
                 const answerLetter = answerUpper.match(/^([A-E])\./)?.[1] ?? ""
-                const answerContent = answerUpper.replace(/^[A-E]\.\s*/i, "").trim()
-                const optionContent = option.value.toUpperCase().replace(/^[A-E]\.\s*/i, "").trim()
+                const answerContent = answerUpper
+                  .replace(/^[A-E]\.\s*/i, "")
+                  .trim()
+                const optionContent = option.value
+                  .toUpperCase()
+                  .replace(/^[A-E]\.\s*/i, "")
+                  .trim()
 
                 const isCorrect =
                   !!correctAnswer &&
-                  (
-                    // Match by letter key: "C" === "C"
-                    (answerLetter !== "" && option.key.toUpperCase() === answerLetter) ||
+                  // Match by letter key: "C" === "C"
+                  ((answerLetter !== "" &&
+                    option.key.toUpperCase() === answerLetter) ||
                     // Match by exact full value
                     option.value.toUpperCase().trim() === answerUpper ||
                     // Match by content tanpa prefix huruf (exact, bukan substring)
-                    (optionContent !== "" && optionContent === answerContent)
-                  )
+                    (optionContent !== "" && optionContent === answerContent))
                 return isCorrect ? (
                   <div key={option.key} className="option-card-active">
                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-l-lg" />
@@ -237,7 +241,9 @@ const ItemQuestion = ({ question, index, subject = "" }: Props) => {
           {isEssay && correctAnswer && (
             <div className="mb-6 p-4 rounded-lg bg-surface-container border border-outline-variant/30">
               <p className="text-xs font-semibold text-secondary mb-2 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">check_circle</span>
+                <span className="material-symbols-outlined text-[14px]">
+                  check_circle
+                </span>
                 Kunci Jawaban
               </p>
               <p className="text-on-surface-variant text-sm leading-relaxed">
@@ -250,7 +256,9 @@ const ItemQuestion = ({ question, index, subject = "" }: Props) => {
           {!isEssay && pembahasan && (
             <div className="mb-6 p-4 rounded-lg bg-primary-container/10 border border-primary/20">
               <p className="text-xs font-semibold text-primary mb-2 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">lightbulb</span>
+                <span className="material-symbols-outlined text-[14px]">
+                  lightbulb
+                </span>
                 Penjelasan
               </p>
               <p className="text-on-surface-variant text-sm leading-relaxed">
@@ -262,16 +270,20 @@ const ItemQuestion = ({ question, index, subject = "" }: Props) => {
           {/* Footer */}
           <div className="flex items-center justify-between pt-4 border-t border-white/5">
             {/* Correct answer indicator */}
-            <div className="flex items-center gap-2 text-secondary">
-              <span className="material-symbols-outlined text-[18px]">check_circle</span>
-              <span className="text-xs font-semibold">
-                {isEssay
-                  ? "Essay — lihat kunci jawaban di atas"
-                  : correctAnswer
-                  ? `Jawaban: ${correctAnswer.replace(/^[A-E]\. /i, "").slice(0, 40)}${correctAnswer.length > 40 ? "..." : ""}`
-                  : ""}
-              </span>
-            </div>
+            {isEssay ? (
+              <div className="flex items-center gap-2 text-secondary"></div>
+            ) : (
+              <div className="flex items-center gap-2 text-secondary">
+                <span className="material-symbols-outlined text-[18px]">
+                  check_circle
+                </span>
+                <span className="text-xs font-semibold">
+                  {`Jawaban: ${correctAnswer
+                    .replace(/^[A-E]\. /i, "")
+                    .slice(0, 40)}${correctAnswer.length > 40 ? "..." : ""}`}
+                </span>
+              </div>
+            )}
 
             {/* Actions */}
             <div className="flex gap-2">
