@@ -34,6 +34,14 @@ Cukup masukkan mata pelajaran, topik, kelas, dan jumlah soal — AI akan menghas
 
 ---
 
+## 📸 Screenshots
+
+| Landing Page | Generate Soal |
+|---|---|
+| ![Landing](./public/screenshots/landing.png) | ![Generate](./public/screenshots/generate.png) |
+
+---
+
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
