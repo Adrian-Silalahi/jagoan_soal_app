@@ -61,7 +61,7 @@ export default async function handler(
     const withOption = prompt_have_options
 
     const classificationResponse = await openai.chat.completions.create({
-      model: "llama-3.1-8b-instant",
+      model: "openai/gpt-oss-20b",
       temperature: 0.2,
       messages: [
         {
@@ -167,7 +167,7 @@ Kamu HANYA merespons dalam format JSON yang diminta, tanpa teks tambahan apapun.
           },
           { role: "user", content: content },
         ],
-        model: "llama-3.3-70b-versatile",
+        model: "openai/gpt-oss-120b",
         temperature: 0.7,
         response_format: { type: "json_object" },
       })
